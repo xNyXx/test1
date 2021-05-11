@@ -6,6 +6,7 @@
     <e p="C:\Users\Ildar\AppData\Roaming\JetBrains\Rider2020.2\consoles\db" t="IncludeRecursive" />
     <e p="C:\Users\Ildar\AppData\Roaming\JetBrains\Rider2020.2\extensions" t="IncludeRecursive" />
     <e p="C:\Users\Ildar\Desktop\test\test1\test_dotnet" t="IncludeRecursive">
+      <e p="answer.txt" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
