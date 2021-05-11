@@ -1,22 +1,45 @@
 ﻿using System;
 
-namespace RefactoringGuru.DesignPatterns.Proxy.Conceptual
+namespace test_dotnet
 {
     public interface ISubject
     {
         void Request();
-        void RocketLaunch(); ///
+    }
+
+    public interface IRocketLauncher
+    {
+        void RocketLaunch(Rocket rocket); 
+    }
+
+    public class Rocket
+    {
+        public string State;
+
+        public Rocket()
+        {
+            State = "not launched"; 
+        }
+        
+        public void Launch()
+        {
+            State = "Launched";
+        }
+    }
+
+    public class RocketLauncher : IRocketLauncher
+    {
+        public void RocketLaunch(Rocket rocket)
+        {
+            Console.WriteLine("LaunchRocket");
+            rocket.Launch();
+        }
     }
     class RealSubject : ISubject // not supposed to be rocket launcher
     {
         public void Request()
         {
             Console.WriteLine("RealSubject: Handling Request.");
-        }
-
-        public void RocketLaunch()   //..........?????? 
-        {
-            Console.WriteLine("LaunchRocket"); 
         }
     }
     class Proxy : ISubject
@@ -37,10 +60,13 @@ namespace RefactoringGuru.DesignPatterns.Proxy.Conceptual
             }
         }
 
-        public void RocketLaunch()
+        public void RocketLaunch( Rocket rocket)
         {
             //Checking if it not launched yet
             Console.WriteLine("Just in two minutes....");
+
+            if (rocket.State == "not launched") ;
+            
         }
 
         public bool CheckAccess()
@@ -53,6 +79,20 @@ namespace RefactoringGuru.DesignPatterns.Proxy.Conceptual
         public void LogAccess()
         {
             Console.WriteLine("Proxy: Logging the time of request.");
+        }
+    }
+
+    class ProxyLauncher : IRocketLauncher
+    {
+        public void RocketLaunch(Rocket rocket)
+        {
+            if (rocket.State == "launched")
+                Console.WriteLine("Already Launched");
+            else
+            {
+                Console.WriteLine("just in two minutes");
+                rocket.Launch();
+            }
         }
     }
     
@@ -75,10 +115,17 @@ namespace RefactoringGuru.DesignPatterns.Proxy.Conceptual
             Console.WriteLine("Client: Executing the client code with a real subject:");
             RealSubject realSubject = new RealSubject();
             client.ClientCode(realSubject);
+            Rocket rocket = new Rocket();
             
-            realSubject.RocketLaunch();
+            RocketLauncher rocketLauncher = new RocketLauncher();
             
+            rocketLauncher.RocketLaunch(rocket);
             
+            ProxyLauncher proxyLauncher = new ProxyLauncher();
+            
+            proxyLauncher.RocketLaunch(rocket);
+
+
             Console.WriteLine();
 
             Console.WriteLine("Client: Executing the same client code with a proxy:");
